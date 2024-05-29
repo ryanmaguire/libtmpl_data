@@ -112,8 +112,13 @@ def rat_remez(func, num_deg, den_deg, start, end):
         # Reset the samples to the peaks and compute the function there.
         x_vals, y_vals = reset_samples(func, xarr, yarr)
 
+        # On occasion there is 1 too many samples. Remove the last entry.
+        if len(x_vals) == num_deg + den_deg + 3:
+            x_vals = x_vals[0:-1]
+            y_vals = y_vals[0:-1]
+
         # If there were not enough samples in x_vals, add some.
-        if len(x_vals) != num_deg + den_deg + 2:
+        elif len(x_vals) != num_deg + den_deg + 2:
             for value in x_vals:
                 tmpld.mpmath.nprint(value)
 
