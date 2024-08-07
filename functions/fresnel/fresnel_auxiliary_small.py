@@ -36,10 +36,10 @@ def fg(x):
 
 def f(x):
     xval = 1 / tmpld.mpmath.mpf(x)
-    return ff(xval)
+    return fg(xval)
 
 START = 0.25
 END = 0.5
 
-(P, Q, e) = tmpld.remez.rat_remez(f, 7, 6, START, END)
+(P, Q, e) = tmpld.remez.rat_remez(f, 28, 3, START, END)
 tmpld.remez.print_rat_coeffs(P, Q)

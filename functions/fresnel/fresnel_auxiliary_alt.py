@@ -40,10 +40,10 @@ def t(x):
 
 
 def f(x):
-    return fg(t(x))
+    return ff(t(x))
 
-START = 2**-15
+START = 2**-35
 END = 1.0
 
-(P, Q, e) = tmpld.remez.rat_remez(f, 8, 6, START, END)
+(P, Q, e) = tmpld.remez.rat_remez(f, 18, 18, START, END)
 tmpld.remez.print_rat_coeffs(P, Q)
