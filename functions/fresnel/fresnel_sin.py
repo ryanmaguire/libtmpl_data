@@ -18,15 +18,13 @@
 #   along with libtmpl_data.  If not, see <https://www.gnu.org/licenses/>.     #
 ################################################################################
 #   Purpose:                                                                   #
-#       Computes the normalized Fresnel cosine function.                       #
+#       Computes the normalized Fresnel sine function.                         #
 ################################################################################
 #   Author: Ryan Maguire                                                       #
 #   Date:   May 23, 2024.                                                      #
 ################################################################################
 """
 import tmpld
-
-
 
 def fresnel_sin(x_val):
     """
