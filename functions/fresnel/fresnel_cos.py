@@ -25,9 +25,6 @@
 ################################################################################
 """
 import tmpld
-import tmpld.remez
-
-tmpld.mpmath.mp.prec = 300
 
 PI_FACTOR = tmpld.mpmath.sqrt(tmpld.mpmath.pi()) / 2
 PLUS_SCALE = tmpld.mpmath.mpc(1 + 1j)
