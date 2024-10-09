@@ -106,7 +106,7 @@ def rat_remez(func, num_deg, den_deg, start, end):
         plt.show()
 
         # Check if we can stop.
-        if input("Max Err = %.5e | Stop? (y/n): " % numpy.max(yarr)) == "y":
+        if input(f"Max Err = {numpy.max(yarr)} | Stop? (y/n): ") == "y":
             return num, den, data[-1]
 
         # Reset the samples to the peaks and compute the function there.
@@ -123,8 +123,8 @@ def rat_remez(func, num_deg, den_deg, start, end):
                 tmpld.mpmath.nprint(value)
 
             print(
-                "Please Add %d Missing Points. Captured Points Printed Above."
-                % ((num_deg + den_deg + 2) - len(x_vals))
+                f"Please Add {(num_deg + den_deg + 2) - len(x_vals)}"
+                "Missing Points. Captured Points Printed Above."
             )
 
             select_points(func, x_vals, y_vals, xarr, yarr, num_deg + den_deg)

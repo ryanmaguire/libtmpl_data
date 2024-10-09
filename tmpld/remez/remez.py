@@ -96,7 +96,7 @@ def remez(func, deg, start, end):
         plt.show()
 
         # Stop the computation if this is good enough.
-        if input("Max Err = %.5e | Stop? (y/n): " % numpy.max(yarr)) == "y":
+        if input(f"Max Err = {numpy.max(yarr)}%.5e | Stop? (y/n): ") == "y":
             return data
 
         # Reset the samples to the peaks and compute the function there.
@@ -108,8 +108,8 @@ def remez(func, deg, start, end):
                 tmpld.mpmath.nprint(value)
 
             print(
-                "Please Add %d Missing Points. Captured Points Printed Above."
-                % ((deg + 2) - len(x_vals))
+                f"Please Add {((deg + 2) - len(x_vals))} Missing Points."
+                "Captured Points Printed Above."
             )
 
             select_points(func, x_vals, y_vals, xarr, yarr, deg)
