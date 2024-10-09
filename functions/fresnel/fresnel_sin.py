@@ -26,18 +26,20 @@
 """
 import tmpld
 
-def fresnel_cos(x_val):
+
+
+def fresnel_sin(x_val):
     """
         Function:
-            fresnel_cos
+            fresnel_sin
         Purpose:
-            Computes the normalized Fresnel cosine function.
+            Computes the normalized Fresnel sine function.
         Arguments:
             x_val:
                 The independent variable. A real number.
         Output:
-            C_x:
-                The normalized Fresnel Cosine evaluated at x.
+            S_x:
+                The normalized Fresnel Sine evaluated at x.
         Method:
             Use the complex error function
             formula for the Fresnel functions.
@@ -46,6 +48,6 @@ def fresnel_cos(x_val):
     plus_scale = tmpld.mpmath.mpc(1 + 1j)
     minus_scale = tmpld.mpmath.mpc(1 - 1j)
     factor = tmpld.mpmath.mpf(x_val) * pi_factor
-    left = minus_scale * tmpld.mpmath.erf(plus_scale * factor)
-    right = plus_scale * tmpld.mpmath.erf(minus_scale * factor)
+    left = plus_scale * tmpld.mpmath.erf(plus_scale * factor)
+    right = minus_scale * tmpld.mpmath.erf(minus_scale * factor)
     return (left + right).real / 4
