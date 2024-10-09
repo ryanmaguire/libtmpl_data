@@ -43,10 +43,10 @@ def fresnel_auxiliary_terms(x_val):
                 Normalized Fresnel cosine at x.
             f_sin_factor:
                 Normalized Fresnel sine at x.
-            sin_factor:
-                sin(pi/2 x^2)
             cos_factor
                 cos(pi/2 x^2)
+            sin_factor:
+                sin(pi/2 x^2)
     """
     factor = tmpld.mpmath.mpf(x_val)
     half = tmpld.mpmath.mpf(0.5)
@@ -54,4 +54,4 @@ def fresnel_auxiliary_terms(x_val):
     f_sin_factor = fresnel_sin(factor) - half
     sin_factor = tmpld.mpmath.sin(tmpld.mpmath.pi() * factor * factor * half)
     cos_factor = tmpld.mpmath.cos(tmpld.mpmath.pi() * factor * factor * half)
-    return f_cos_factor, f_sin_factor, sin_factor, cos_factor
+    return f_cos_factor, f_sin_factor, cos_factor, sin_factor
