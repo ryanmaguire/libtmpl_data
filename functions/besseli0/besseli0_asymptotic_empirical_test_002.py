@@ -46,5 +46,5 @@ for n in range(3, 10):
 
         # If the expansion was very accurate, move along.
         if abs(diff) < EPS:
-            print(m, x, "%E" % float(diff))
+            print(m, x, f"{float(diff)}")
             break
