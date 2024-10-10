@@ -18,7 +18,7 @@
 #   along with libtmpl_data.  If not, see <https://www.gnu.org/licenses/>.     #
 ################################################################################
 #   Purpose:                                                                   #
-#       Prints pi/2 in the form a0 + a1 + a2 + a3, correctly founded.          #
+#       Prints pi/2 in the form a0 + a1, correctly rounded.                    #
 ################################################################################
 #   Author: Ryan Maguire                                                       #
 #   Date:   January 18, 2023.                                                  #
@@ -26,7 +26,7 @@
 """
 
 # Functions for working in binary.
-import binary
+import tmpld.binary
 
 # Multi-precision math functions.
 import mpmath
@@ -34,28 +34,26 @@ import mpmath
 # Set precision to 1500 bits. Overkill for most things.
 mpmath.mp.prec = 1500
 
-x = mpmath.pi/mpmath.mpf(2)
-y = binary.float_to_binary(x)
+PI_BY_TWO_VAL = mpmath.pi() / 2
+PI_BY_TWO_BINARY_VAL = tmpld.binary.float_to_binary(PI_BY_TWO_VAL)
 
-number = 29
-X = [0]*number
-Y = [0]*number
+NUMBER = 2
 
-skip = 8
-start = skip
+SKIP = 52
+START = SKIP
 
-for n in range(number):
-    ynew = binary.round_up(y, start + skip*n)
-    xnew = binary.binary_to_float(ynew)
-    X[n] = xnew
-    Y[n] = ynew
+for n in range(NUMBER):
+    ynew = tmpld.binary.round_up_binary(PI_BY_TWO_BINARY_VAL, START + SKIP*n)
+    xnew = tmpld.binary.binary_to_float(ynew)
 
-    s = mpmath.nstr(xnew, 50, strip_zeros = True, min_fixed = 0, max_fixed = 0)
-    if s[0] != "-":
-        s = "+" + s
+    float_string = mpmath.nstr(
+        xnew, 50, strip_zeros = True, min_fixed = 0, max_fixed = 0
+    )
 
-    s = s.replace("e", "E")
-    # print("#define A%d (%s)" % (n, s))
-    print("    %s," % s)
-    x = x - xnew
-    y = binary.float_to_binary(x)
+    if float_string[0] != "-":
+        float_string = "+" + float_string
+
+    float_string = float_string.replace("e", "E")
+    print(f"    {float_string}")
+    PI_BY_TWO_VAL = PI_BY_TWO_VAL - xnew
+    PI_BY_TWO_BINARY_VAL = tmpld.binary.float_to_binary(PI_BY_TWO_VAL)
