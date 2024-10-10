@@ -18,49 +18,37 @@
 #   along with libtmpl_data.  If not, see <https://www.gnu.org/licenses/>.     #
 ################################################################################
 #   Purpose:                                                                   #
-#       Remez coefficients for the auxiliary Fresnel functions f and g.        #
+#       Converts an array of mpmath.mpf objects as decimals in scientific form.#
 ################################################################################
 #   Author: Ryan Maguire                                                       #
-#   Date:   May 23, 2024.                                                      #
+#   Date:   October 10, 2024.                                                  #
 ################################################################################
 """
-import tmpld
-import tmpld.remez
-from fresnel_auxiliary_f import auxiliary_f
-from fresnel_auxiliary_g import auxiliary_g
 
-def transform(x_val):
+# Tool for converting an mpf object to a decimal.
+from tmpld.string.float_to_c_string import float_to_c_string
+
+# Print out an array or list of mpf objects as ordinary decimals.
+def print_mpf_array(array, padding = "", suffix = ""):
     """
         Function:
-            transform
+            print_mpf_array
         Purpose:
-            Transforms the interval [4, infinity) to (0, 1] using y = 4 / x.
+            Print an array of mpmath.mpf objects as decimals.
+        Arguments:
+            array:
+                An array or list of mpf objects.
+        Output:
+            None.
     """
-    x_mpf = tmpld.mpmath.mpf(x_val)
-    return tmpld.mpmath.mpf(4) / x_mpf
 
-def tranformed_f(x_val):
-    """
-        Function:
-            transformed_f
-        Purpose:
-            Computes the auxiliary "f" functions for
-            the transformed variable "x".
-    """
-    return auxiliary_f(transform(x_val))
+    # Loop through the numbers in the array.
+    for number in array:
+        number_string = float_to_c_string(number)
 
-def tranformed_g(x_val):
-    """
-        Function:
-            transformed_g
-        Purpose:
-            Computes the auxiliary "g" functions for
-            the transformed variable "x".
-    """
-    return auxiliary_g(transform(x_val))
+        # Negative numbers automatically get a minus sign. Give a
+        # Plus sign to positive numbers to be consistent in style.
+        if number >= 0:
+            number_string = "+" + number_string
 
-START = 2**-19
-END = 1.0
-
-(P, Q, e) = tmpld.remez.rat_remez(tranformed_g, 9, 8, START, END)
-tmpld.remez.print_rat_coeffs(P, Q)
+        print(padding + number_string + suffix)

@@ -49,7 +49,7 @@ from tmpld.remez.perform_remez_exchange import perform_remez_exchange
 from tmpld.remez.select_points import select_points
 
 # Computes the degree "deg" Remez MiniMax polynomial of "f" on [start, end]
-def remez(func, deg, start, end):
+def remez(func, deg, start, end, interactive = True):
     """
         Function:
             remez
@@ -92,11 +92,12 @@ def remez(func, deg, start, end):
 
         # Plot the error. If the local extrema alternate and are of similar
         # magnitude, the algorithm is complete.
-        plt.plot(xarr, yarr)
-        plt.show()
+        if interactive:
+            plt.plot(xarr, yarr)
+            plt.show()
 
         # Stop the computation if this is good enough.
-        if input(f"Max Err = {numpy.max(yarr)}%.5e | Stop? (y/n): ") == "y":
+        if input(f"Max Err = {numpy.max(yarr)} | Stop? (y/n): ") == "y":
             return data
 
         # Reset the samples to the peaks and compute the function there.

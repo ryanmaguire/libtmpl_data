@@ -18,49 +18,59 @@
 #   along with libtmpl_data.  If not, see <https://www.gnu.org/licenses/>.     #
 ################################################################################
 #   Purpose:                                                                   #
-#       Remez coefficients for the auxiliary Fresnel functions f and g.        #
+#       Computes the Remez coefficients for Fresnel sine.                      #
 ################################################################################
 #   Author: Ryan Maguire                                                       #
-#   Date:   May 23, 2024.                                                      #
+#   Date:   October 10, 2024.                                                  #
 ################################################################################
 """
-import tmpld
 import tmpld.remez
-from fresnel_auxiliary_f import auxiliary_f
-from fresnel_auxiliary_g import auxiliary_g
+import tmpld.string
+from fresnel_sin import fresnel_sin
 
-def transform(x_val):
+def get_coeffs(index, deg):
     """
         Function:
-            transform
+            get_coeffs
         Purpose:
-            Transforms the interval [4, infinity) to (0, 1] using y = 4 / x.
+            Computes coefficients for the Remez polynomial of
+            the Fresnel sine on the interval [1 + n/32, 1 + (n+1)/32].
+        Arguments:
+            index:
+                The value n for the interval above.
+            deg:
+                The degree of the Remez polynomial.
+        Output:
+            coeffs:
+                The Remez coefficients.
     """
-    x_mpf = tmpld.mpmath.mpf(x_val)
-    return tmpld.mpmath.mpf(4) / x_mpf
 
-def tranformed_f(x_val):
-    """
-        Function:
-            transformed_f
-        Purpose:
-            Computes the auxiliary "f" functions for
-            the transformed variable "x".
-    """
-    return auxiliary_f(transform(x_val))
+    def shifted_f_sin(x_val):
+        """
+            Computes the Fresnel sine function
+            for a shifted, or translated, variable.
+        """
+        shift = tmpld.mpmath.mpf(1) + tmpld.mpmath.mpf(index) / 32
+        x_mpf = tmpld.mpmath.mpf(x_val)
+        y_val = x_mpf + shift
+        return fresnel_sin(y_val)
 
-def tranformed_g(x_val):
-    """
-        Function:
-            transformed_g
-        Purpose:
-            Computes the auxiliary "g" functions for
-            the transformed variable "x".
-    """
-    return auxiliary_g(transform(x_val))
+    return tmpld.remez.remez(shifted_f_sin, deg, 0, 1/32, interactive = False)
 
-START = 2**-19
-END = 1.0
+# Precisions:
+#   Single:         DEGREE =  3
+#   Double:         DEGREE =  8
+#   Extended:       DEGREE =  9
+#   Double-Double:  DEGREE = 14
+#   Quadruple:      DEGREE = 15
+DEGREE = 9
+REMEZ_COEFFS = []
 
-(P, Q, e) = tmpld.remez.rat_remez(tranformed_g, 9, 8, START, END)
-tmpld.remez.print_rat_coeffs(P, Q)
+# Get the coefficients for each interval [1 + n/32, 1 + (n+1)/32].
+for ind in range(32):
+
+    # The last element of the list is the epsilon term. It is
+    # needed for the coefficients of the polynomial, discard it.
+    REMEZ_COEFFS += get_coeffs(ind, DEGREE)[0:DEGREE+1]
+
+tmpld.string.print_mpf_array(REMEZ_COEFFS, padding = " "*4, suffix = "L,")

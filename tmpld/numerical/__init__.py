@@ -27,3 +27,4 @@
 
 from tmpld.numerical.first_derivative import first_derivative
 from tmpld.numerical.second_derivative import second_derivative
+from tmpld.numerical.ld2mpf import ld2mpf
