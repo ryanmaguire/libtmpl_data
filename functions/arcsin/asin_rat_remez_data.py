@@ -28,7 +28,7 @@
 # mpmath imported here.
 import tmpld
 
-# Algorithm for computing Pade coefficients given here.
+# Algorithm for computing Remez coefficients given here.
 import tmpld.remez
 
 # Arcsin Taylor coefficients given here.
@@ -37,27 +37,33 @@ import arcsin
 # Compute and print the coefficients for the Pade approximant of asin(x).
 coeffs = [arcsin.taylor(n) for n in range(1, 60)]
 
-# Computes the Taylor series for (asin(sqrt(x)) - x) / x^3
-def asin_sqrt_taylor(x_val):
+# Computes the Taylor series for (asin(x) - x) / x^3.
+def asin_taylor(x_val):
     """
         Function:
-            asin_sqrt_taylor
+            asin_taylor
         Purpose:
-            Computes the Taylor series of asin(x) in powers of x^n instead of
-            x^{2n+1}. Roughly like asin(sqrt(x)).
+            Computes the Taylor series of (asin(x) - x) / x^3.
     """
     x_mpf = tmpld.mpmath.mpf(x_val)
+    x_sq = x_mpf * x_mpf
     out = tmpld.mpmath.mpf(0)
     deg = len(coeffs) - 1
 
+    # Horner's method for polynomial evaluation.
     for ind in range(deg+1):
         num = coeffs[deg - ind].numerator
         den = coeffs[deg - ind].denominator
         coeff = tmpld.mpmath.mpf(num) / tmpld.mpmath.mpf(den)
-        out = out*x_mpf + coeff
+        out = out*x_sq + coeff
 
     return out
 
 # Print the coefficients for the rational minimax approximation.
-(P, Q, err) = tmpld.remez.rat_remez(asin_sqrt_taylor, 5, 4, -0.5, 0.5)
-tmpld.remez.print_rat_coeffs(P, Q)
+(P, Q, err) = tmpld.remez.rat_remez(asin_taylor, 8, 8, -0.5, 0.5)
+
+# Odd coefficients are negligible. In the absence of rounding error, the
+# odd coefficients would be zero.
+P_even = [P[2*k] for k in range(1 + (len(P) >> 1))]
+Q_even = [Q[2*k] for k in range(1 + (len(Q) >> 1))]
+tmpld.remez.print_rat_coeffs(P_even, Q_even)
