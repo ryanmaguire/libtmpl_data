@@ -1,3 +1,6 @@
+import tmpld
+import tmpld.remez
+
 def kb(x, a):
     x_val = tmpld.mpmath.mpf(x)
     alpha = tmpld.mpmath.mpf(a)
@@ -13,10 +16,23 @@ def kb20(x):
 
 def f(x):
     if x == 0:
-        return -4*tmpld.mpmath.pi**2 / (tmpld.mpmath.besseli(0, 2 * tmpld.mpmath.pi) - 1)
+        numer = -4 * tmpld.mpmath.pi**2
+        denom = tmpld.mpmath.besseli(0, 2 * tmpld.mpmath.pi) - 1
+        return numer / denom
+
     x_val = tmpld.mpmath.mpf(x)
     c = x_val + 1 / 2
     return kb20(c) / x_val
 
-(p_tail, q_tail, e) = tmpld.remez.rat_remez(f, 10, 8, -0.25, 0.25)
-(p_tail, q_tail, e) = tmpld.remez.rat_remez(f, 8, 6, -0.25, -1.0E-15)
+def g(x):
+    if x == 0:
+        factor = tmpld.mpmath.besseli(1, 2 * tmpld.mpmath.pi)
+        numer = -4 * tmpld.mpmath.pi * factor
+        denom = tmpld.mpmath.besseli(0, 2 * tmpld.mpmath.pi) - 1
+        return numer / denom
+
+    return (kb(tmpld.mpmath.mpf(x), 2) - 1) / tmpld.mpmath.mpf(x)**2
+
+# (p, q, e) = tmpld.remez.rat_remez(f, 10, 8, -0.25, 0.25)
+# (p, q, e) = tmpld.remez.rat_remez(g, 8, 0, -1/32, 0.32)
+# (p_tail, q_tail, e) = tmpld.remez.rat_remez(f, 8, 6, -0.25, -1.0E-15)
