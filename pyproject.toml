@@ -1,0 +1,18 @@
+[build-system]
+requires = ["setuptools", "numpy", "scipy", "matplotlib", "mpmath"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "tmpld"
+description = "Provides Python tools for writing libtmpl."
+version = "v0.1"
+readme = "README.md"
+license = {file = "LICENSE"}
+keywords = ["mathematics", "algorithms", "libm"]
+requires-python = ">= 3.7"
+authors = [
+    {name = "Ryan Maguire", email = "rmaguire@protonmail.com"}
+]
+maintainers = [
+    {name = "Ryan Maguire", email = "rmaguire@protonmail.com"}
+]
